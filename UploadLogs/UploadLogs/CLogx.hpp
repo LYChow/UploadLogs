@@ -31,6 +31,7 @@ protected:
     CriticalSection m_cs;
     char *m_mvsIp;
     std::unique_ptr<std::thread> _sendLogThread;
+    bool uploadSuccess;
 };
 
 
