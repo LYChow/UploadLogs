@@ -22,7 +22,13 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
+    m_clogx.m_ProcessCallback=^(char *process)
+    {
+        dispatch_sync(dispatch_get_main_queue(), ^{
+        _displayUploadProcess.text =[NSString stringWithUTF8String:process];
+        });
+        
+    };
 }
 - (IBAction)writeLogs:(id)sender
 {
@@ -34,6 +40,11 @@
 - (IBAction)uploadLogs:(id)sender
 {
     m_clogx.UploadLogs();
+}
+
+-(void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
+{
+    [self.view endEditing:YES];
 }
 
 @end

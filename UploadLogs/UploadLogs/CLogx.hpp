@@ -14,6 +14,8 @@
 #include "sync.h"
 #include <thread>
 
+typedef void(^uploadProcessCallback)(char *);
+
 struct CLogx
 {
     CLogx();
@@ -24,6 +26,8 @@ struct CLogx
     int   UpLoadFileToCenterServerThread();
     int   SendCommandToCenterServer(char * szParam, int nDataLen, char *&RecvBuf, int &RecvLen, int nCommandType);
     char * getFilePath();
+    char * getUploadProcess();
+    uploadProcessCallback m_ProcessCallback;
 protected:
     FILE *m_file;
     int m_uCurSize = 0;
@@ -32,7 +36,9 @@ protected:
     char *m_mvsIp;
     std::unique_ptr<std::thread> _sendLogThread;
     bool uploadSuccess;
+    char *uploadProcess;
 };
+
 
 
 #endif /* CLogx_hpp */

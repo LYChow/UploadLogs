@@ -105,6 +105,15 @@ char * CLogx::getFilePath()
     return sz_filePath;
 }
 
+char * CLogx::getUploadProcess()
+{
+    if (uploadProcess)
+    {
+        return uploadProcess;
+    }
+    return 0;
+}
+
 void CLogx::WriteFile(char *szLog,int nSize ,bool bNeedTrace)
 {
     CriticalSectionLock l(m_cs);
@@ -462,8 +471,10 @@ int CLogx::UpLoadFileToCenterServerThread()
             dwFileLenLeft -= nReadLeftLen;
             nCurRepack++;
             
-            NSLog(@"上传进度:%.2f%@ \n",nCurRepack/(float)nTotalRepack*100,@"%");
-            
+            NSLog(@"上传进度:%.2f %@ \n",nCurRepack/(float)nTotalRepack*100,@"%");
+            uploadProcess = (char *)[[NSString stringWithFormat:@"上传进度:%.2f%@ \n",nCurRepack/(float)nTotalRepack*100,@"%"] cStringUsingEncoding:NSUTF8StringEncoding];
+
+            m_ProcessCallback(uploadProcess);
         }
         if (nRet < 0)
         {
